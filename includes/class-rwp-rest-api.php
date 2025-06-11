@@ -13,6 +13,23 @@ class RWP_REST_API {
     
     public function __construct() {
         add_action('rest_api_init', array($this, 'register_routes'));
+        add_action('rest_api_init', array($this, 'add_cors_support'));
+    }
+    
+    public function add_cors_support() {
+        $enable_cors = defined('REST_REQUEST') && REST_REQUEST;
+        if ($enable_cors) {
+            header('Access-Control-Allow-Origin: *');
+            header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
+            header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+            header('Access-Control-Allow-Credentials: true');
+        }
+        
+        // Manejar preflight requests
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            header('HTTP/1.1 200 OK');
+            exit();
+        }
     }
     
     /**
@@ -38,6 +55,10 @@ class RWP_REST_API {
                     'sanitize_callback' => 'sanitize_text_field',
                 ),
                 'search' => array(
+                    'default' => '',
+                    'sanitize_callback' => 'sanitize_text_field',
+                ),
+                'slug' => array(
                     'default' => '',
                     'sanitize_callback' => 'sanitize_text_field',
                 ),
@@ -100,6 +121,71 @@ class RWP_REST_API {
                 ),
             ),
         ));
+
+        // Endpoint para añadir al carrito
+        register_rest_route('react-woo-products/v1', '/cart/add', array(
+            'methods' => array('POST', 'OPTIONS'),
+            'callback' => array($this, 'add_to_cart'),
+            'permission_callback' => '__return_true',
+            'args' => array(
+                'product_id' => array(
+                    'required' => true,
+                    'sanitize_callback' => 'absint',
+                    'validate_callback' => function($param) {
+                        return is_numeric($param) && $param > 0;
+                    }
+                ),
+                'quantity' => array(
+                    'default' => 1,
+                    'sanitize_callback' => 'absint',
+                ),
+                'variation_id' => array(
+                    'default' => 0,
+                    'sanitize_callback' => 'absint',
+                ),
+                'variation' => array(
+                    'default' => array(),
+                    'sanitize_callback' => array($this, 'sanitize_variation_data'),
+                ),
+            ),
+        ));
+
+        // Endpoint para obtener el carrito
+        register_rest_route('react-woo-products/v1', '/cart', array(
+            'methods' => array('GET', 'OPTIONS'),
+            'callback' => array($this, 'get_cart'),
+            'permission_callback' => '__return_true',
+        ));
+
+        // Endpoint para actualizar cantidad en el carrito
+        register_rest_route('react-woo-products/v1', '/cart/update', array(
+            'methods' => array('POST', 'OPTIONS'),
+            'callback' => array($this, 'update_cart_item'),
+            'permission_callback' => '__return_true',
+            'args' => array(
+                'cart_item_key' => array(
+                    'required' => true,
+                    'sanitize_callback' => 'sanitize_text_field',
+                ),
+                'quantity' => array(
+                    'required' => true,
+                    'sanitize_callback' => 'absint',
+                ),
+            ),
+        ));
+
+        // Endpoint para eliminar del carrito
+        register_rest_route('react-woo-products/v1', '/cart/remove', array(
+            'methods' => array('POST', 'OPTIONS'),
+            'callback' => array($this, 'remove_from_cart'),
+            'permission_callback' => '__return_true',
+            'args' => array(
+                'cart_item_key' => array(
+                    'required' => true,
+                    'sanitize_callback' => 'sanitize_text_field',
+                ),
+            ),
+        ));
     }
     
     /**
@@ -112,6 +198,7 @@ class RWP_REST_API {
         $search = $request->get_param('search');
         $orderby = $request->get_param('orderby');
         $order = $request->get_param('order');
+        $slug = $request->get_param('slug');
         
         $args = array(
             'post_type' => 'product',
@@ -121,6 +208,12 @@ class RWP_REST_API {
             'orderby' => $orderby,
             'order' => $order,
         );
+        
+        // Filtro por slug específico
+        if (!empty($slug)) {
+            $args['name'] = $slug;
+            $args['posts_per_page'] = 1; // Solo necesitamos uno cuando buscamos por slug
+        }
         
         // Filtro por categoría
         if (!empty($category)) {
@@ -267,8 +360,8 @@ class RWP_REST_API {
             'in_stock' => $product->is_in_stock(),
             'stock_quantity' => $product->get_stock_quantity(),
             'manage_stock' => $product->get_manage_stock(),
-            'categories' => wp_get_post_terms($product->get_id(), 'product_cat', array('fields' => 'names')),
-            'tags' => wp_get_post_terms($product->get_id(), 'product_tag', array('fields' => 'names')),
+            'categories' => $this->get_product_categories($product->get_id()),
+            'tags' => $this->get_product_tags($product->get_id()),
             'images' => $this->get_product_images($product),
             'attributes' => $this->get_product_attributes($product),
             'variations' => $this->get_product_variations($product),
@@ -363,5 +456,258 @@ class RWP_REST_API {
         }
         
         return $variations;
+    }
+    
+    /**
+     * Obtener categorías del producto con formato correcto
+     */
+    private function get_product_categories($product_id) {
+        $categories = wp_get_post_terms($product_id, 'product_cat');
+        $formatted_categories = array();
+        
+        if (!is_wp_error($categories) && !empty($categories)) {
+            foreach ($categories as $category) {
+                $formatted_categories[] = array(
+                    'id' => $category->term_id,
+                    'name' => $category->name,
+                    'slug' => $category->slug,
+                );
+            }
+        }
+        
+        return $formatted_categories;
+    }
+    
+    /**
+     * Obtener tags del producto con formato correcto
+     */
+    private function get_product_tags($product_id) {
+        $tags = wp_get_post_terms($product_id, 'product_tag');
+        $formatted_tags = array();
+        
+        if (!is_wp_error($tags) && !empty($tags)) {
+            foreach ($tags as $tag) {
+                $formatted_tags[] = array(
+                    'id' => $tag->term_id,
+                    'name' => $tag->name,
+                    'slug' => $tag->slug,
+                );
+            }
+        }
+        
+        return $formatted_tags;
+    }
+
+    public function add_to_cart($request) {
+        // Manejar OPTIONS request
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            return rest_ensure_response(array('status' => 'ok'));
+        }
+
+        if (!function_exists('WC')) {
+            return new WP_Error('woocommerce_not_active', 'WooCommerce is not active', array('status' => 500));
+        }
+
+        // Inicializar la sesión de WooCommerce si no existe
+        if (!WC()->session) {
+            WC()->session = new WC_Session_Handler();
+            WC()->session->init();
+        }
+
+        // Inicializar el carrito si no existe
+        if (!WC()->cart) {
+            wc_load_cart();
+        }
+
+        $product_id = $request->get_param('product_id');
+        $quantity = $request->get_param('quantity');
+        $variation_id = $request->get_param('variation_id');
+        $variation = $request->get_param('variation');
+
+        // Log para debugging
+        error_log('Add to cart request: ' . json_encode(array(
+            'product_id' => $product_id,
+            'quantity' => $quantity,
+            'variation_id' => $variation_id,
+            'variation' => $variation
+        )));
+
+        // Verificar que el producto existe
+        $product = wc_get_product($product_id);
+        if (!$product) {
+            return new WP_Error('product_not_found', 'Producto no encontrado', array('status' => 404));
+        }
+
+        // Verificar stock
+        if (!$product->is_in_stock()) {
+            return new WP_Error('product_out_of_stock', 'Producto agotado', array('status' => 400));
+        }
+
+        if ($product->managing_stock() && $product->get_stock_quantity() < $quantity) {
+            return new WP_Error('insufficient_stock', 'Stock insuficiente', array('status' => 400));
+        }
+
+        // Añadir al carrito
+        $cart_item_key = WC()->cart->add_to_cart(
+            $product_id,
+            $quantity,
+            $variation_id,
+            $variation
+        );
+
+        if (!$cart_item_key) {
+            return new WP_Error('add_to_cart_failed', 'Error al añadir al carrito', array('status' => 500));
+        }
+
+        // Log para debugging
+        error_log('Product added to cart successfully: ' . $cart_item_key);
+
+        // Devolver información del carrito actualizada
+        return rest_ensure_response(array(
+            'success' => true,
+            'cart_item_key' => $cart_item_key,
+            'message' => 'Producto añadido al carrito correctamente',
+            'cart' => $this->get_cart_data(),
+        ));
+    }
+
+    public function get_cart($request) {
+        // Manejar OPTIONS request
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            return rest_ensure_response(array('status' => 'ok'));
+        }
+
+        if (!function_exists('WC')) {
+            return new WP_Error('woocommerce_not_active', 'WooCommerce is not active', array('status' => 500));
+        }
+
+        // Inicializar la sesión de WooCommerce si no existe
+        if (!WC()->session) {
+            WC()->session = new WC_Session_Handler();
+            WC()->session->init();
+        }
+
+        // Inicializar el carrito si no existe
+        if (!WC()->cart) {
+            wc_load_cart();
+        }
+
+        return rest_ensure_response($this->get_cart_data());
+    }
+
+    public function update_cart_item($request) {
+        // Manejar OPTIONS request
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            return rest_ensure_response(array('status' => 'ok'));
+        }
+
+        if (!function_exists('WC')) {
+            return new WP_Error('woocommerce_not_active', 'WooCommerce is not active', array('status' => 500));
+        }
+
+        $cart_item_key = $request->get_param('cart_item_key');
+        $quantity = $request->get_param('quantity');
+
+        if (!WC()->cart->get_cart_item($cart_item_key)) {
+            return new WP_Error('cart_item_not_found', 'Producto no encontrado en el carrito', array('status' => 404));
+        }
+
+        if ($quantity == 0) {
+            WC()->cart->remove_cart_item($cart_item_key);
+        } else {
+            WC()->cart->set_quantity($cart_item_key, $quantity);
+        }
+
+        return rest_ensure_response(array(
+            'success' => true,
+            'message' => 'Carrito actualizado correctamente',
+            'cart' => $this->get_cart_data(),
+        ));
+    }
+
+    public function remove_from_cart($request) {
+        // Manejar OPTIONS request
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            return rest_ensure_response(array('status' => 'ok'));
+        }
+
+        if (!function_exists('WC')) {
+            return new WP_Error('woocommerce_not_active', 'WooCommerce is not active', array('status' => 500));
+        }
+
+        $cart_item_key = $request->get_param('cart_item_key');
+
+        if (!WC()->cart->get_cart_item($cart_item_key)) {
+            return new WP_Error('cart_item_not_found', 'Producto no encontrado en el carrito', array('status' => 404));
+        }
+
+        WC()->cart->remove_cart_item($cart_item_key);
+
+        return rest_ensure_response(array(
+            'success' => true,
+            'message' => 'Producto eliminado del carrito',
+            'cart' => $this->get_cart_data(),
+        ));
+    }
+
+    private function get_cart_data() {
+        if (!WC()->cart) {
+            return array(
+                'items' => array(),
+                'totals' => array(
+                    'subtotal' => 0,
+                    'total' => 0,
+                    'tax_total' => 0,
+                    'shipping_total' => 0,
+                ),
+                'item_count' => 0,
+            );
+        }
+
+        $cart_items = array();
+        foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
+            $product = $cart_item['data'];
+            $product_image = wp_get_attachment_image_src($product->get_image_id(), 'thumbnail');
+            
+            $cart_items[] = array(
+                'key' => $cart_item_key,
+                'product_id' => $cart_item['product_id'],
+                'variation_id' => $cart_item['variation_id'],
+                'quantity' => $cart_item['quantity'],
+                'line_total' => $cart_item['line_total'],
+                'line_subtotal' => $cart_item['line_subtotal'],
+                'product' => array(
+                    'id' => $product->get_id(),
+                    'name' => $product->get_name(),
+                    'slug' => $product->get_slug(),
+                    'price' => $product->get_price(),
+                    'image' => $product_image ? $product_image[0] : null,
+                ),
+            );
+        }
+
+        return array(
+            'items' => $cart_items,
+            'totals' => array(
+                'subtotal' => (float) WC()->cart->get_subtotal(),
+                'total' => (float) WC()->cart->get_total('raw'),
+                'tax_total' => (float) WC()->cart->get_total_tax(),
+                'shipping_total' => (float) WC()->cart->get_shipping_total(),
+            ),
+            'item_count' => WC()->cart->get_cart_contents_count(),
+        );
+    }
+
+    public function sanitize_variation_data($value) {
+        if (!is_array($value)) {
+            return array();
+        }
+        
+        $sanitized = array();
+        foreach ($value as $key => $val) {
+            $sanitized[sanitize_text_field($key)] = sanitize_text_field($val);
+        }
+        
+        return $sanitized;
     }
 } 

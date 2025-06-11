@@ -1,0 +1,13 @@
+# Configuración de la API de WordPress/WooCommerce
+# Esta URL se usa tanto para la API como para configurar automáticamente las imágenes
+NEXT_PUBLIC_WP_API_URL=http://tu-sitio.com/wp-json
+
+# Credenciales de WooCommerce API (ir a WooCommerce > Configuración > Avanzado > API REST)
+NEXT_PUBLIC_WC_CONSUMER_KEY=ck_tu_clave_aqui
+NEXT_PUBLIC_WC_CONSUMER_SECRET=cs_tu_secret_aqui
+
+# Ejemplos para diferentes ambientes:
+# Desarrollo local: http://localhost/wp-json
+# Desarrollo con dominio local: http://misite.local/wp-json  
+# Staging: https://staging.misite.com/wp-json
+# Producción: https://misite.com/wp-json

@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { WooProduct } from '@/types/woocommerce'
 import { wooCommerceApi } from '@/lib/woocommerce'
 import ProductCard from './ProductCard'
-import LoadingSkeleton from './LoadingSkeleton'
+import LoadingSkeleton from '@/app/components/LoadingSkeleton'
 
 export default function ProductList() {
   const [products, setProducts] = useState<WooProduct[]>([])
@@ -15,11 +15,7 @@ export default function ProductList() {
   
   const PRODUCTS_PER_PAGE = 12
 
-  useEffect(() => {
-    loadProducts()
-  }, [currentPage])
-
-  const loadProducts = async () => {
+  const loadProducts = useCallback(async () => {
     try {
       setLoading(true)
       const response = await wooCommerceApi.getProducts({
@@ -37,7 +33,11 @@ export default function ProductList() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [currentPage])
+
+  useEffect(() => {
+    loadProducts()
+  }, [loadProducts])
 
   if (loading) {
     return <LoadingSkeleton />
