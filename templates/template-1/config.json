@@ -1,0 +1,54 @@
+{
+    "name": "Modern Card",
+    "description": "Una plantilla moderna con diseño de tarjeta, perfecta para productos premium",
+    "version": "1.0.0",
+    "author": "React WooCommerce Products",
+    "thumbnail": "thumbnail.jpg",
+    "category": "modern",
+    "tags": ["modern", "card", "premium", "clean"],
+    "settings": {
+        "showRating": {
+            "type": "boolean",
+            "default": true,
+            "label": "Mostrar rating",
+            "description": "Mostrar estrellas de valoración del producto"
+        },
+        "showCategories": {
+            "type": "boolean",
+            "default": true,
+            "label": "Mostrar categorías",
+            "description": "Mostrar categorías del producto"
+        },
+        "showSKU": {
+            "type": "boolean",
+            "default": false,
+            "label": "Mostrar SKU",
+            "description": "Mostrar código SKU del producto"
+        },
+        "primaryColor": {
+            "type": "color",
+            "default": "#2c5aa0",
+            "label": "Color principal",
+            "description": "Color principal para botones y elementos destacados"
+        },
+        "buttonStyle": {
+            "type": "select",
+            "default": "filled",
+            "options": [
+                {"value": "filled", "label": "Relleno"},
+                {"value": "outline", "label": "Contorno"},
+                {"value": "minimal", "label": "Minimal"}
+            ],
+            "label": "Estilo del botón",
+            "description": "Estilo visual del botón agregar al carrito"
+        },
+        "animationDuration": {
+            "type": "number",
+            "default": 300,
+            "min": 100,
+            "max": 1000,
+            "label": "Duración animación (ms)",
+            "description": "Duración de las animaciones en milisegundos"
+        }
+    }
+} 

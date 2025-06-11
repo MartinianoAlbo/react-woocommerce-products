@@ -1,0 +1,609 @@
+/* Admin CSS para React WooCommerce Products */
+
+/* ===== GENERAL ===== */
+.rwp-admin-container {
+    max-width: 1200px;
+    margin: 20px 0;
+}
+
+.rwp-admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.rwp-admin-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+    color: #23282d;
+}
+
+.rwp-admin-description {
+    color: #666;
+    margin: 5px 0 0 0;
+    font-size: 14px;
+}
+
+/* ===== PLANTILLAS ===== */
+.rwp-templates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.rwp-template-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+
+.rwp-template-card:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.rwp-template-thumbnail {
+    width: 100%;
+    height: 180px;
+    background: #f9f9f9;
+    background-image: linear-gradient(45deg, #f0f0f0 25%, transparent 25%), 
+                      linear-gradient(-45deg, #f0f0f0 25%, transparent 25%), 
+                      linear-gradient(45deg, transparent 75%, #f0f0f0 75%), 
+                      linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 14px;
+}
+
+.rwp-template-thumbnail img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.rwp-template-info {
+    padding: 15px;
+}
+
+.rwp-template-name {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 5px 0;
+    color: #23282d;
+}
+
+.rwp-template-description {
+    color: #666;
+    font-size: 13px;
+    margin: 0 0 10px 0;
+    line-height: 1.4;
+}
+
+.rwp-template-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 15px;
+}
+
+.rwp-template-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.rwp-template-actions .button {
+    font-size: 12px;
+    padding: 4px 8px;
+    line-height: 1.2;
+    height: auto;
+}
+
+.rwp-template-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    font-size: 11px;
+    background: #0073aa;
+    color: white;
+    border-radius: 2px;
+    margin-left: 10px;
+}
+
+.rwp-template-badge.custom {
+    background: #46b450;
+}
+
+/* ===== IMPORTAR/EXPORTAR ===== */
+.rwp-import-section {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.rwp-import-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 15px 0;
+    color: #23282d;
+}
+
+.rwp-drop-zone {
+    border: 2px dashed #ddd;
+    border-radius: 4px;
+    padding: 40px;
+    text-align: center;
+    background: #fafafa;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.rwp-drop-zone:hover,
+.rwp-drop-zone.dragover {
+    border-color: #0073aa;
+    background: #f0f8ff;
+}
+
+.rwp-drop-zone-text {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.rwp-file-input {
+    margin-bottom: 10px;
+}
+
+/* ===== CONFIGURACIÓN ===== */
+.rwp-settings-section {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.rwp-settings-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 15px 0;
+    color: #23282d;
+}
+
+.rwp-setting-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.rwp-setting-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.rwp-setting-label {
+    flex: 0 0 200px;
+    font-weight: 600;
+    color: #23282d;
+}
+
+.rwp-setting-control {
+    flex: 1;
+}
+
+.rwp-setting-description {
+    font-size: 13px;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* ===== ANALYTICS ===== */
+.rwp-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.rwp-stat-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 20px;
+    text-align: center;
+}
+
+.rwp-stat-number {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0073aa;
+    margin-bottom: 5px;
+}
+
+.rwp-stat-label {
+    font-size: 14px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.rwp-analytics-table {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.rwp-analytics-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.rwp-analytics-table th,
+.rwp-analytics-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.rwp-analytics-table th {
+    background: #f9f9f9;
+    font-weight: 600;
+    color: #23282d;
+}
+
+.rwp-analytics-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* ===== METABOX DEL PRODUCTO ===== */
+.rwp-product-settings {
+    margin-top: 10px;
+}
+
+.rwp-product-settings p {
+    margin-bottom: 15px;
+}
+
+.rwp-product-settings label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #23282d;
+}
+
+.rwp-product-settings input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.rwp-product-settings select {
+    width: 100%;
+    padding: 4px;
+}
+
+.rwp-product-preview {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #666;
+}
+
+/* ===== MODAL ===== */
+.rwp-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rwp-modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 4px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.rwp-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.rwp-modal-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    color: #23282d;
+}
+
+.rwp-modal-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #999;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rwp-modal-close:hover {
+    color: #333;
+}
+
+/* ===== UTILIDADES ===== */
+.rwp-text-center {
+    text-align: center;
+}
+
+.rwp-text-right {
+    text-align: right;
+}
+
+.rwp-mt-10 {
+    margin-top: 10px;
+}
+
+.rwp-mt-20 {
+    margin-top: 20px;
+}
+
+.rwp-mb-10 {
+    margin-bottom: 10px;
+}
+
+.rwp-mb-20 {
+    margin-bottom: 20px;
+}
+
+.rwp-hidden {
+    display: none;
+}
+
+.rwp-success {
+    color: #46b450;
+}
+
+.rwp-error {
+    color: #dc3232;
+}
+
+.rwp-warning {
+    color: #ffb900;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .rwp-admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .rwp-templates-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .rwp-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .rwp-setting-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .rwp-setting-label {
+        flex: none;
+    }
+    
+    .rwp-template-actions {
+        justify-content: flex-start;
+    }
+}
+
+/* ===== DARK MODE (WordPress 5.7+) ===== */
+@media (prefers-color-scheme: dark) {
+    .auto-fold #adminmenu,
+    .auto-fold #adminmenu li.menu-top,
+    .folded #adminmenu {
+        background: #1e1e1e;
+    }
+    
+    .rwp-template-card {
+        background: #2c2c2c;
+        border-color: #444;
+        color: #e0e0e0;
+    }
+    
+    .rwp-template-name {
+        color: #e0e0e0;
+    }
+    
+    .rwp-settings-section,
+    .rwp-import-section {
+        background: #2c2c2c;
+        border-color: #444;
+        color: #e0e0e0;
+    }
+    
+    .rwp-settings-title,
+    .rwp-import-title {
+        color: #e0e0e0;
+    }
+}
+
+/* ===== MODAL DE IMPORTACIÓN IA ===== */
+#rwp-ai-import-modal .rwp-modal-content {
+    max-width: 800px;
+    width: 90%;
+}
+
+.rwp-ai-import-form {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.rwp-form-group {
+    margin-bottom: 20px;
+}
+
+.rwp-form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #23282d;
+}
+
+.rwp-form-group input[type="text"],
+.rwp-form-group textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.rwp-form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+    font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+}
+
+#rwp-ai-code {
+    min-height: 300px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 15px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.rwp-ai-import-tips {
+    background: #f0f8ff;
+    border: 1px solid #b3d9ff;
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+.rwp-ai-import-tips h4 {
+    margin: 0 0 10px 0;
+    color: #0073aa;
+    font-size: 14px;
+}
+
+.rwp-ai-import-tips ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.rwp-ai-import-tips li {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 5px;
+    line-height: 1.4;
+}
+
+.rwp-ai-import-progress {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.rwp-progress-bar {
+    width: 100%;
+    height: 20px;
+    background: #f0f0f0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.rwp-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #0073aa, #005a87);
+    width: 0%;
+    transition: width 0.3s ease;
+    animation: progress-animation 2s ease-in-out infinite;
+}
+
+@keyframes progress-animation {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.rwp-progress-text {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+/* Estilos para el botón de importar IA */
+#rwp-import-ai-code {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+    color: white;
+    text-shadow: none;
+    box-shadow: none;
+}
+
+#rwp-import-ai-code:hover {
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+    border-color: #5a67d8;
+    color: white;
+}
+
+#rwp-import-ai-code .dashicons {
+    filter: brightness(0) invert(1);
+}
+
+/* Responsive para modal IA */
+@media (max-width: 768px) {
+    #rwp-ai-import-modal .rwp-modal-content {
+        width: 95%;
+        margin: 10px auto;
+    }
+    
+    .rwp-ai-import-form {
+        max-height: 60vh;
+    }
+    
+    #rwp-ai-code {
+        min-height: 200px;
+        font-size: 12px;
+    }
+} 

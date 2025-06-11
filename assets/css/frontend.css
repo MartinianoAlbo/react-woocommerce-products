@@ -1,0 +1,376 @@
+/* Frontend CSS para React WooCommerce Products */
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.rwp-product-wrapper {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#rwp-product-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
+}
+
+/* ===== PRODUCTO POR DEFECTO ===== */
+.rwp-default-product {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.rwp-default-product .product-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+    color: #333;
+    line-height: 1.3;
+}
+
+/* ===== IMÁGENES ===== */
+.rwp-default-product .product-images {
+    width: 100%;
+    text-align: center;
+}
+
+.rwp-default-product .product-main-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.rwp-default-product .product-main-image:hover {
+    transform: scale(1.02);
+}
+
+/* ===== PRECIO ===== */
+.rwp-default-product .product-price {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.rwp-default-product .price {
+    color: #2c5aa0;
+}
+
+.rwp-default-product .sale-price {
+    color: #e74c3c;
+}
+
+.rwp-default-product .original-price {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+/* ===== DESCRIPCIÓN ===== */
+.rwp-default-product .product-description {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #666;
+}
+
+.rwp-default-product .product-description p {
+    margin-bottom: 15px;
+}
+
+.rwp-default-product .product-description p:last-child {
+    margin-bottom: 0;
+}
+
+/* ===== BOTÓN AGREGAR AL CARRITO ===== */
+.rwp-default-product .add-to-cart-button {
+    background: #2c5aa0;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    align-self: flex-start;
+}
+
+.rwp-default-product .add-to-cart-button:hover {
+    background: #1e3f73;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(44, 90, 160, 0.3);
+}
+
+.rwp-default-product .add-to-cart-button:active {
+    transform: translateY(0);
+}
+
+.rwp-default-product .add-to-cart-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ===== ESTADO AGOTADO ===== */
+.rwp-default-product .out-of-stock {
+    background: #e74c3c;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ===== METADATOS ===== */
+.rwp-default-product .product-categories,
+.rwp-default-product .product-sku {
+    font-size: 14px;
+    color: #777;
+    padding: 8px 0;
+    border-top: 1px solid #eee;
+}
+
+.rwp-default-product .product-categories:first-of-type {
+    border-top: none;
+}
+
+.rwp-default-product .product-categories strong,
+.rwp-default-product .product-sku strong {
+    color: #333;
+}
+
+/* ===== LOADING ===== */
+.rwp-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    font-size: 16px;
+    color: #666;
+}
+
+.rwp-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #2c5aa0;
+    border-radius: 50%;
+    animation: rwp-spin 1s linear infinite;
+    margin-right: 15px;
+}
+
+@keyframes rwp-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ===== ERROR ===== */
+.rwp-error {
+    padding: 20px;
+    background: #ffeaea;
+    border: 1px solid #e74c3c;
+    border-radius: 6px;
+    color: #c0392b;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* ===== RESPONSIVE MOBILE ===== */
+@media (max-width: 768px) {
+    .rwp-default-product {
+        padding: 15px;
+        margin: 10px;
+    }
+    
+    .rwp-default-product .product-title {
+        font-size: 24px;
+    }
+    
+    .rwp-default-product .product-price {
+        font-size: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .rwp-default-product .add-to-cart-button {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .rwp-default-product {
+        padding: 10px;
+        margin: 5px;
+        gap: 15px;
+    }
+    
+    .rwp-default-product .product-title {
+        font-size: 20px;
+    }
+    
+    .rwp-default-product .product-price {
+        font-size: 18px;
+    }
+    
+    .rwp-default-product .add-to-cart-button {
+        padding: 12px 20px;
+        font-size: 16px;
+    }
+}
+
+/* ===== VARIACIONES DE PLANTILLAS ===== */
+
+/* Plantilla estilo tarjeta */
+.rwp-card-style {
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.rwp-card-style:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+/* Plantilla estilo moderno */
+.rwp-modern-style {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.rwp-modern-style .product-title {
+    color: white;
+}
+
+.rwp-modern-style .product-description {
+    color: rgba(255,255,255,0.9);
+}
+
+.rwp-modern-style .add-to-cart-button {
+    background: rgba(255,255,255,0.2);
+    border: 2px solid white;
+    color: white;
+}
+
+.rwp-modern-style .add-to-cart-button:hover {
+    background: white;
+    color: #667eea;
+}
+
+/* Plantilla estilo minimalista */
+.rwp-minimal-style {
+    background: none;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+}
+
+.rwp-minimal-style .product-title {
+    font-weight: 300;
+    font-size: 32px;
+}
+
+.rwp-minimal-style .add-to-cart-button {
+    background: transparent;
+    color: #333;
+    border: 2px solid #333;
+}
+
+.rwp-minimal-style .add-to-cart-button:hover {
+    background: #333;
+    color: white;
+}
+
+/* ===== ANIMACIONES ===== */
+.rwp-fade-in {
+    animation: rwp-fadeIn 0.5s ease-in;
+}
+
+@keyframes rwp-fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.rwp-slide-up {
+    animation: rwp-slideUp 0.6s ease-out;
+}
+
+@keyframes rwp-slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* ===== COMPATIBILIDAD CON TEMAS ===== */
+
+/* Storefront */
+.storefront .rwp-default-product {
+    font-family: inherit;
+}
+
+/* Astra */
+.astra-theme .rwp-default-product {
+    font-family: inherit;
+}
+
+/* OceanWP */
+.oceanwp-theme .rwp-default-product {
+    font-family: inherit;
+}
+
+/* GeneratePress */
+.generatepress .rwp-default-product {
+    font-family: inherit;
+}
+
+/* ===== ACCESIBILIDAD ===== */
+.rwp-default-product .add-to-cart-button:focus {
+    outline: 2px solid #2c5aa0;
+    outline-offset: 2px;
+}
+
+.rwp-default-product .product-main-image:focus {
+    outline: 2px solid #2c5aa0;
+    outline-offset: 4px;
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+    .rwp-default-product .add-to-cart-button {
+        display: none;
+    }
+    
+    .rwp-default-product {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    .rwp-default-product .product-main-image {
+        max-width: 300px;
+    }
+}
+
+
+/* Asegurar que solo nuestro contenedor React sea visible */
+.rwp-product-wrapper {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
